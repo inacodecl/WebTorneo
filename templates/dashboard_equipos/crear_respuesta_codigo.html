@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Enviar Código</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        textarea[readonly] {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="mb-4">Enviar Código para Desafío</h2>
+        <div class="mb-3">
+            <a href="{{ url_for('dashboard_equipo_bp.dashboard_equipo') }}" class="btn btn-outline-secondary">
+                ← Volver al Dashboard
+            </a>
+        </div>
+        <form id="form-codigo" method="POST" action="{{ url_for('respuesta_codigo_bp.crear_respuesta') }}">
+            <input type="hidden" name="equipo_id" value="{{ session.get('equipo_id') }}">
+            <input type="hidden" name="desafio_id" value="{{ request.args.get('desafio_id') }}">
+            <input type="hidden" name="archivo_nombre" id="archivo_nombre" value="respuesta_equipo.py">
+            <input type="hidden" name="tiempo" id="tiempo">
+
+            <div class="mb-3">
+                <label for="codigo" class="form-label">Escribe tu código (Python)</label>
+                <textarea id="codigo" name="codigo_real" class="form-control" rows="12" required></textarea>
+                <div class="form-text text-danger">⚠️ No puedes usar copiar/pegar. Debes escribir manualmente.</div>
+            </div>
+
+            <div class="mb-3">
+                <button type="button" class="btn btn-secondary" onclick="probarCodigo()">Probar Código</button>
+                <button type="submit" class="btn btn-primary">Enviar Código</button>
+            </div>
+
+            <div class="mb-3" id="salida-container" style="display:none;">
+                <label class="form-label">Salida del código:</label>
+                <textarea class="form-control bg-dark text-light" id="salida" rows="6" readonly></textarea>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Evita pegar código
+        document.getElementById("codigo").addEventListener("paste", function(e) {
+            e.preventDefault();
+            alert("¡No puedes pegar código! Debes escribirlo manualmente.");
+        });
+
+        // Recolecta el tiempo de ejecución (solo para demo, puedes mejorar con marca de tiempo real)
+        document.getElementById("form-codigo").addEventListener("submit", function(e) {
+            const tiempo = Math.floor(Math.random() * 40) + 10; // Tiempo simulado de ejecución (segundos)
+            document.getElementById("tiempo").value = tiempo;
+        });
+
+        async function probarCodigo() {
+            const codigo = document.getElementById("codigo").value;
+            if (!codigo.trim()) {
+                alert("Escribe algo de código antes de probar.");
+                return;
+            }
+
+            const salidaContainer = document.getElementById("salida-container");
+            const salidaBox = document.getElementById("salida");
+            salidaBox.value = "Ejecutando...";
+
+            try {
+                const response = await fetch("{{ url_for('respuesta_codigo_bp.probar_codigo') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ codigo })
+                });
+
+                const data = await response.json();
+                salidaBox.value = data.salida || "Sin salida";
+                salidaContainer.style.display = "block";
+            } catch (error) {
+                salidaBox.value = "⚠️ Error al ejecutar el código.\n" + error.message;
+                salidaContainer.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

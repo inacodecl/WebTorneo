@@ -1,0 +1,162 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace; 
+    line-height: 1.6;
+    background-color: #1c1c1c; 
+    color: #ddd;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #2c2c2c; 
+    border-radius: 8px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    border: 2px solid #d32f2f;
+    position: relative;
+    z-index: 1;
+}
+
+.title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #d32f2f; 
+    font-family: 'Consolas', monospace;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #ccc; 
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    border: 2px solid #d32f2f; 
+    border-radius: 4px;
+    outline: none;
+    background-color: #282828; 
+    color: #ddd; 
+    transition: border-color 0.3s;
+}
+
+.form-input:focus {
+    border-color: #f44336; 
+}
+
+.search-container {
+    position: relative;
+}
+
+.suggestions-list {
+    list-style: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #333; 
+    border: 1px solid #d32f2f; 
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.suggestions-list li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.suggestions-list li:hover {
+    background-color: #444; 
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1e1e1e; 
+    border: 1px solid #333;
+}
+
+.custom-table th,
+.custom-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.custom-table th {
+    background-color: #d32f2f;
+    font-weight: bold;
+    color: #1e1e1e; 
+}
+
+.custom-table tr:nth-child(even) {
+    background-color: #252d37;
+}
+
+.custom-table tr:hover {
+    background-color: #2e353d; 
+}
+
+.table-placeholder {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+.submit-button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    color: #fff;
+    background-color: #d32f2f; 
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #b71c1c; 
+}
+
+.row-dragging {
+  opacity: 0.7;
+  transform: scale(0.98);
+  transition: all 0.2s ease;
+}
+
+.miembros-table tr:hover:not(.row-dragging) {
+  background-color: #444; 
+}
+
+.miembros-table tr.dragover {
+  border: 2px dashed #d32f2f;
+}
+
+video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}

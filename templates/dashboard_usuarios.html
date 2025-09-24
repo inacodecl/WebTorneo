@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/timer.css">
+</head>
+<body>
+    <a href="{{ url_for('login.logout') }}">Cerrar sesión</a>
+
+
+    <div class="header">
+        <img src="../static/img/logoFinal.png" alt="logo">
+        <p>Sitio Web en construcción</p>
+    </div>
+
+    <div class="countdown">
+        <div class="time-item" id="days">
+            <span id="days-value">00</span> d
+        </div>
+        <div class="time-item" id="hours">
+            <span id="hours-value">00</span> h
+        </div>
+        <div class="time-item" id="minutes">
+            <span id="minutes-value">00</span> m
+        </div>
+        <div class="time-item" id="seconds">
+            <span id="seconds-value">00</span> s
+        </div>
+    </div>
+
+    <script src="../static/js/timer.js"></script>
+</body>
+</html>

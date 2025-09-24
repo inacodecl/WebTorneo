@@ -1,0 +1,40 @@
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a1a 0%, #d90429 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-signin label,
+.form-signin .form-control::placeholder {
+    color: #fff !important;
+    opacity: 0.85;
+}
+
+.form-signin .form-control {
+    background: #222;
+    color: #fff;
+    border: 1.5px solid #d90429;
+}
+
+.form-signin .form-control:focus {
+    background: #222;
+    color: #fff;
+    border-color: #d90429;
+    box-shadow: 0 0 0 0.2rem rgba(217,4,41,.25);
+}
+
+.form-signin h1, .form-signin h3 {
+    color: #fff;
+}
+
+.btn-outline-danger {
+    color: #d90429;
+    border-color: #d90429;
+}
+.btn-outline-danger:hover {
+    background: #d90429;
+    color: #fff;
+    border-color: #d90429;
+}

@@ -1,0 +1,36 @@
+.escarlata-title {
+    color: #d32f2f;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+.btn-escarlata {
+    background-color: #d32f2f;
+    color: #fff;
+    border: none;
+}
+.btn-escarlata:hover, .btn-escarlata:focus {
+    background-color: #b71c1c;
+    color: #fff;
+}
+.bg-escarlata {
+    background-color: #d32f2f !important;
+    color: #fff !important;
+}
+.section-title {
+    color: #d32f2f;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.card-header {
+    background: #23272b;
+    border-bottom: 1px solid #d32f2f;
+}
+.table thead th {
+    border-bottom: 2px solid #d32f2f;
+}
+.avatar-img {
+    border: 3px solid #d32f2f;
+}
+pre {
+    font-size: 1rem;
+}

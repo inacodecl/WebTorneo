@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Fases</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body class="bg-dark text-light">
+    <div class="container py-4">
+        <h2 class="escarlata-title mb-4">Administrar Fases</h2>
+        <a href="{{ url_for('dashboard_admin_bp.dashboard_admin') }}" class="btn btn-outline-light mb-3">
+            <i class="bi bi-arrow-left"></i> Volver al Dashboard Admin
+        </a>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="card mb-4">
+            <div class="card-header bg-escarlata text-light">
+                {% if fase_editar %}
+                    Editar Fase
+                {% else %}
+                    Crear Fase
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <form method="post" action="{{ url_for('fase.fase') }}">
+                    {% if fase_editar %}
+                        <input type="hidden" name="id_fase" value="{{ fase_editar.id_fase or fase_editar['id_fase'] }}">
+                    {% endif %}
+                    <div class="mb-3">
+                        <label>Dificultad</label>
+                        <input type="text" class="form-control" name="dificultad" value="{{ fase_editar.dificultad or fase_editar['dificultad'] if fase_editar else '' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Torneo</label>
+                        <select class="form-select" name="torneo_id" required>
+                            <option value="">Selecciona torneo</option>
+                            {% for torneo in torneos %}
+                                <option value="{{ torneo.id_torneo or torneo['id_torneo'] }}"
+                                    {% if fase_editar and (fase_editar.torneo_id or fase_editar['torneo_id']) == (torneo.id_torneo or torneo['id_torneo']) %}selected{% endif %}>
+                                    {{ torneo.nombre or torneo['nombre'] }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-escarlata">
+                        {% if fase_editar %}Actualizar{% else %}Crear{% endif %}
+                    </button>
+                    {% if fase_editar %}
+                        <a href="{{ url_for('fase.fase') }}" class="btn btn-secondary ms-2">Cancelar</a>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-escarlata text-light">Fases creadas</div>
+            <div class="card-body p-0">
+                <table class="table table-dark table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Dificultad</th>
+                            <th>Torneo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fase in fases %}
+                        <tr>
+                            <td>{{ fase.dificultad or fase['dificultad'] }}</td>
+                            <td>
+                                {% set torneo = torneos | selectattr('id_torneo', 'equalto', fase.torneo_id) | list %}
+                                {{ torneo[0].nombre if torneo and torneo[0] else fase.torneo_id }}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('fase.fase', editar=fase.id_fase or fase['id_fase']) }}" class="btn btn-sm btn-outline-info">Editar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

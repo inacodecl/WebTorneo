@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/inscripcion.css')}}">
+</head>
+<body>
+  <video id="introVideo" autoplay muted loop playsinline preload="auto">
+    <source src="{{url_for('static', filename='video/muchas.mp4')}}" type="video/mp4">
+    Tu navegador no soporta video HTML5.
+  </video>
+  <div class="container">
+    <h1 class="title">Inscripción de Equipo</h1>
+    <form id="inscripcionForm" method="post" action="{{ url_for('inscripcion.inscribir_equipo') }}">
+      <div class="form-group">
+        <label for="nombreEquipo" class="form-label">Nombre del Equipo:</label>
+        <input type="text" id="nombreEquipo" name="nombreEquipo" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label for="avatar" class="form-label">Avatar:</label>
+        <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/gif" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label for="pwd_equipo" class="form-label">Contraseña:</label>
+        <input type="password" name="pwd_equipo" id="pwd_equipo" class="form-input">
+      </div>
+      
+      <div id="tablaContainer" class="table-container">
+        <h3>Miembros del Equipo</h3>
+        
+        <div class="form-group search-container">
+          <label for="busquedaCorreo" class="form-label">Buscar correo:</label>
+          <input type="text" id="busquedaCorreo" name="busquedaCorreo" class="form-input" autocomplete="off">
+          <!-- Lista de sugerencias personalizada -->
+          <ul id="sugerencias" class="suggestions-list"></ul>
+        </div>
+
+        <table id="tablaMiembros" class="custom-table">
+          <thead>
+            <tr>
+              <th>Correo</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Rol</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-filled="false">
+              <td colspan="5" class="table-placeholder">Arrastra un integrante aquí</td>
+            </tr>
+            <tr data-filled="false">
+              <td colspan="5" class="table-placeholder">Arrastra un integrante aquí</td>
+            </tr>
+            <tr data-filled="false">
+              <td colspan="5" class="table-placeholder">Arrastra un integrante aquí</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <button type="submit" class="submit-button">Inscribir equipo</button>
+    </form>
+
+    <div class="alert alert-info text-center mb-4" style="background: rgba(30,30,30,0.85); color: #d90429; border: 1.5px solid #d90429;">
+      ¿Ya tienes un equipo? 
+      <a href="{{ url_for('login.formulario_login') }}" class="fw-bold text-escarlata" style="color: #d90429;">Inicia sesión aquí</a>
+    </div>
+  </div>
+  <script src="{{url_for('static', filename='js/inscripcion.js')}}"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Juez</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/db_jueces.css') }}">
+</head>
+<body class="bg-dark text-light">
+    <div class="container py-4">
+        <div class="escarlata-header text-center py-4 mb-5 position-relative">
+            <h1 class="escarlata-title mb-2">Desafío Escarlata</h1>
+            <h4 class="mb-0">Dashboard de Juez</h4>
+            <a href="#" class="btn btn-outline-light position-absolute top-0 end-0 m-3" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+            </a>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <span class="section-title"><i class="bi bi-filter"></i> Filtros</span>
+            </div>
+            <div class="card-body">
+                <form method="get" action="{{ url_for('dashboard_juez_bp.dashboard_juez') }}" class="row g-3">
+                    <div class="col-md-5">
+                        <label for="torneo_id" class="form-label">Torneo</label>
+                        <select class="form-select" id="torneo_id" name="torneo_id" required onchange="this.form.submit()">
+                            <option value="">Selecciona un torneo</option>
+                            {% for torneo in torneos %}
+                                <option value="{{ torneo.id_torneo or torneo['id_torneo'] }}"
+                                    {% if torneo_id and torneo_id == (torneo.id_torneo|string or torneo['id_torneo']|string) %}selected{% endif %}>
+                                    {{ torneo.nombre or torneo['nombre'] }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="desafio_id" class="form-label">Desafío</label>
+                        <select class="form-select" id="desafio_id" name="desafio_id" {% if not torneo_id %}disabled{% endif %} onchange="this.form.submit()">
+                            <option value="">Selecciona un desafío</option>
+                            {% for desafio in desafios %}
+                                <option value="{{ desafio.id_desafio or desafio['id_desafio'] }}"
+                                    {% if desafio_id and desafio_id == (desafio.id_desafio|string or desafio['id_desafio']|string) %}selected{% endif %}>
+                                    {{ desafio.titulo or desafio['titulo'] }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-escarlata w-100" {% if not torneo_id %}disabled{% endif %}>Filtrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if envios %}
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-escarlata">
+                <span class="section-title text-light"><i class="bi bi-inbox-fill"></i> Envíos del desafío</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover table-striped mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th>Equipo</th>
+                                <!-- Si tienes fecha de envío, descomenta la siguiente línea -->
+                                <!-- <th>Fecha de envío</th> -->
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for envio in envios %}
+                            <tr>
+                                <td>{{ envio.nombre_equipo }}</td>
+                                <!-- Si tienes fecha de envío, descomenta la siguiente línea -->
+                                <!-- <td>{{ envio.fecha_envio }}</td> -->
+                                <td>
+                                    {% set estado = envio.estado or envio['estado'] %}
+                                    <span class="badge 
+                                        {% if estado == 'aprobado' %}bg-success
+                                        {% elif estado == 'rechazado' %}bg-danger
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ estado|capitalize if estado else 'Pendiente' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-info rounded-pill" data-bs-toggle="modal" data-bs-target="#modalEnvio{{ envio.id_respuesta_codigo or envio['id_respuesta_codigo'] }}">
+                                        <i class="bi bi-eye"></i> Ver / Calificar
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Modal de revisión de envío -->
+                            <div class="modal fade" id="modalEnvio{{ envio.id_respuesta_codigo or envio['id_respuesta_codigo'] }}" tabindex="-1" aria-labelledby="modalLabel{{ envio.id_respuesta_codigo or envio['id_respuesta_codigo'] }}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content bg-dark text-light">
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title" id="modalLabel{{ envio.id_respuesta_codigo or envio['id_respuesta_codigo'] }}">
+                                                <i class="bi bi-code-slash text-escarlata"></i> Revisión de Envío - {{ envio.nombre_equipo }}
+                                            </h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Si tienes fecha de envío, descomenta la siguiente línea -->
+                                            <!-- <div class="mb-2"><strong>Fecha de envío:</strong> {{ envio.fecha_envio }}</div> -->
+                                            <hr>
+                                            <h6 class="text-escarlata">Código enviado:</h6>
+                                            <pre class="bg-black p-3 rounded" style="max-height: 300px; overflow:auto;">{{ envio.codigo or envio['codigo'] }}</pre>
+                                            <hr>
+                                            <h6 class="text-info">Salida del programa:</h6>
+                                            <pre class="bg-secondary p-3 rounded" style="max-height: 200px; overflow:auto;">{{ envio.salida or envio['salida'] }}</pre>
+                                            {% if envio.error or envio['error'] %}
+                                            <div class="alert alert-danger mt-3">
+                                                <strong>Error:</strong> {{ envio.error or envio['error'] }}
+                                            </div>
+                                            {% endif %}
+                                            <form method="post" action="{{ url_for('dashboard_juez_bp.comentar_envio', id_respuesta_codigo=envio.id_respuesta_codigo or envio['id_respuesta_codigo'], torneo_id=torneo_id, desafio_id=desafio_id) }}">
+                                                <div class="mb-3">
+                                                    <label for="comentario{{ envio.id_respuesta_codigo or envio['id_respuesta_codigo'] }}" class="form-label">Comentario para el equipo:</label>
+                                                    <textarea class="form-control" id="comentario{{ envio.id_respuesta_codigo or envio['id_respuesta_codigo'] }}" name="comentario" rows="2">{{ envio.comentario or envio['comentario'] }}</textarea>
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <button type="submit" name="estado" value="rechazado" class="btn btn-outline-danger me-2 rounded-pill">
+                                                        <i class="bi bi-x-circle"></i> Rechazar
+                                                    </button>
+                                                    <button type="submit" name="estado" value="aprobado" class="btn btn-escarlata rounded-pill">
+                                                        <i class="bi bi-check-circle"></i> Aprobar
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% elif desafio_id %}
+            <div class="alert alert-info">No hay envíos para este desafío.</div>
+        {% endif %}
+
+        <div class="footer mt-5">
+            &copy; 2025 Desafío Escarlata &mdash; Todos los derechos reservados
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de logout -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">¿Cerrar sesión?</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas cerrar sesión y salir del Dashboard?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a href="{{ url_for('login.logout') }}" class="btn btn-escarlata">Cerrar sesión</a>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

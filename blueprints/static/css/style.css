@@ -1,0 +1,185 @@
+
+body {
+  margin: 0;
+  background-color: #02090a;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.08) 0px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 2px
+  );
+  animation: codigoHolografico 5s linear infinite;
+  mix-blend-mode: screen;
+  opacity: 0.2;
+}
+
+@keyframes codigoHolografico {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+#skipBtn {
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 5px;
+}
+
+#contenido {
+  background-color: #02090a;
+  color: white;
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#logoContainer {
+  position: relative;
+  display: inline-block;
+  width: 90%;
+  max-width: 600px;
+  height: auto;
+  animation: holografico 6s linear infinite;
+  background-image: 
+    linear-gradient(135deg, rgba(255,50,50,0.08) 0%, rgba(255,0,0,0.04) 40%, rgba(255,50,50,0.08) 60%, rgba(255,0,0,0.04) 100%),
+    radial-gradient(circle at 30% 30%, rgba(255,100,100,0.1), transparent 70%),
+    radial-gradient(circle at 70% 70%, rgba(255,0,0,0.1), transparent 70%);
+  background-blend-mode: screen;
+  background-size: 200% 200%;
+  background-position: center;
+  border: 2px solid rgba(255, 100, 100, 0.6);
+  box-shadow: 0 0 20px 5px rgba(255, 80, 80, 0.4);
+  border-radius: 10px;
+}
+
+#logoFinal {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  opacity: 0;
+  animation: brillo 2s ease forwards;
+  z-index: 2;
+  filter: drop-shadow(0 0 10px rgba(255, 60, 60, 0.6)) brightness(1.1) contrast(1.2);
+}
+
+#topButtons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+#loginBtn {
+  background: rgba(0, 123, 255, 0.8);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+#loginBtn:hover {
+  background: rgba(0, 90, 190, 0.9);
+}
+#overlayMensaje {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  z-index: 20;
+  text-align: center;
+  padding: 20px;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+}
+@keyframes brillo {
+  0% { opacity: 0; filter: brightness(0.5); transform: scale(0.8); }
+  50% { opacity: 1; filter: brightness(1.5); transform: scale(1.05); }
+  100% { opacity: 1; filter: brightness(1); transform: scale(1); }
+}
+
+@keyframes holografico {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+#enterBtn {
+  margin-top: 20px;
+  background: #ff0000;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+#enterBtn:hover {
+  background: #cc0000;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 600px) {
+  #skipBtn {
+    padding: 8px 16px;
+    font-size: 14px;
+    top: 10px;
+    right: 10px;
+  }
+
+  #enterBtn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  #logoContainer {
+    width: 95%;
+  }
+}

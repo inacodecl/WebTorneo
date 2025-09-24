@@ -1,0 +1,84 @@
+body {
+        background: #18191a;
+        color: #e0e0e0;
+        font-family: 'Consolas', 'Courier New', monospace;
+    }
+
+.escarlata-header {
+    background: linear-gradient(90deg, #d32f2f 0%, #7b1f23 100%);
+    color: #fff;
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: 0 4px 12px rgba(123,31,35,0.15);
+}
+
+.escarlata-title {
+    font-family: 'Consolas', monospace;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    text-shadow: 1px 1px 8px #7b1f23;
+}
+
+.avatar-img {
+    border: 4px solid #d32f2f;
+    box-shadow: 0 2px 8px rgba(123,31,35,0.2);
+    background: #222;
+}
+
+.card {
+    background: #232323;
+    border: 1.5px solid #d32f2f;
+    border-radius: 10px;
+}
+
+.card-header {
+    background: #2c2c2c;
+    color: #d32f2f;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-bottom: 1.5px solid #d32f2f;
+}
+
+.list-group-item {
+    background: #232323;
+    color: #e0e0e0;
+    border: none;
+}
+
+.list-group-item:not(:last-child) {
+    border-bottom: 1px solid #333;
+}
+
+.badge-escarlata {
+    background: #d32f2f;
+    color: #fff;
+}
+
+.btn-escarlata {
+    background: #d32f2f;
+    color: #fff;
+    border: none;
+}
+
+.btn-escarlata:hover {
+    background: #b71c1c;
+    color: #fff;
+}
+
+.section-title {
+    color: #d32f2f;
+    font-family: 'Consolas', monospace;
+    font-size: 1.3rem;
+}
+
+.footer {
+    color: #888;
+    font-size: 0.95rem;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.bi {
+    vertical-align: -.125em;
+    margin-right: 6px;
+}

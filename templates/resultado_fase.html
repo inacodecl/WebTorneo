@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de Fase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+<div class="container py-4">
+    <h2 class="escarlata-title mb-4">Resultados de Fase</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card mb-4">
+        <div class="card-header bg-escarlata text-light">
+            {% if resultado_editar %}
+                Editar Resultado de Fase
+            {% else %}
+                Crear Resultado de Fase
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <form method="post" action="{{ url_for('resultado_fase.resultado_fase') }}">
+                {% if resultado_editar %}
+                    <input type="hidden" name="id_resultado" value="{{ resultado_editar.id_resultado_fase or resultado_editar['id_resultado_fase'] }}">
+                {% endif %}
+                <div class="mb-3">
+                    <label>Posición</label>
+                    <input type="number" class="form-control" name="posicion" value="{{ resultado_editar.posicion if resultado_editar else '' }}" required>
+                </div>
+                <div class="mb-3">
+                    <label>Puntaje</label>
+                    <input type="number" class="form-control" name="puntaje" value="{{ resultado_editar.puntaje if resultado_editar else '' }}" required>
+                </div>
+                <div class="mb-3">
+                    <label>Media Tiempo (HH:MM:SS)</label>
+                    <input type="text" class="form-control" name="media_tiempo"
+                        value="{{ resultado_editar.media_tiempo if resultado_editar else '' }}"
+                        pattern="^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$"
+                        title="Formato requerido: HH:MM:SS (ejemplo: 01:23:45)" required>
+                    <div class="form-text text-light">Formato requerido: <b>HH:MM:SS</b> (ejemplo: 01:23:45)</div>
+                </div>
+                <div class="mb-3">
+                    <label>Equipo</label>
+                    <select class="form-select" name="equipo_id" required>
+                        <option value="">Selecciona equipo</option>
+                        {% for equipo in equipos %}
+                            <option value="{{ equipo.CodigoEquipo }}"
+                                {% if resultado_editar and (resultado_editar.equipo_id or resultado_editar['equipo_id']) == equipo.CodigoEquipo %}selected{% endif %}>
+                                {{ equipo.NombreEquipo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Fase</label>
+                    <select class="form-select" name="fase_id" required>
+                        <option value="">Selecciona fase</option>
+                        {% for fase in fases %}
+                            <option value="{{ fase.id_fase or fase['id_fase'] }}"
+                                {% if resultado_editar and (resultado_editar.fase_id or resultado_editar['fase_id']) == (fase.id_fase or fase['id_fase']) %}selected{% endif %}>
+                                {{ fase.dificultad or fase['dificultad'] }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-escarlata">
+                    {% if resultado_editar %}Actualizar{% else %}Crear{% endif %}
+                </button>
+                {% if resultado_editar %}
+                    <a href="{{ url_for('resultado_fase.resultado_fase') }}" class="btn btn-secondary ms-2">Cancelar</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-escarlata text-light">Resultados registrados</div>
+        <div class="card-body p-0">
+            <table class="table table-dark table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Posición</th>
+                        <th>Puntaje</th>
+                        <th>Media Tiempo</th>
+                        <th>Equipo</th>
+                        <th>Fase</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for resultado in resultados %}
+                    <tr>
+                        <td>{{ resultado.posicion }}</td>
+                        <td>{{ resultado.puntaje }}</td>
+                        <td>{{ resultado.media_tiempo }}</td>
+                        <td>
+                            {% set equipo = equipos | selectattr('CodigoEquipo', 'equalto', resultado.equipo_id) | list %}
+                            {{ equipo[0].NombreEquipo if equipo and equipo[0] else resultado.equipo_id }}
+                        </td>
+                        <td>
+                            {% set fase = fases | selectattr('id_fase', 'equalto', resultado.fase_id) | list %}
+                            {{ fase[0].dificultad if fase and fase[0] else resultado.fase_id }}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('resultado_fase.resultado_fase', editar=resultado.id_resultado_fase) }}" class="btn btn-sm btn-outline-info">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

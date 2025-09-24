@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Integrantes con equipo</title>
+</head>
+<body>
+    <h1>Integrantes con equipos</h1>
+    <a href="{{ url_for('integrante.asignar_integrante') }}">Asignar un integrante a un equipo</a>
+    <ul>
+        {% for integrante in integrantes %}
+            <li>
+                <strong>{{ integrante.correo }}</strong><br>
+                <br>  
+                {{ integrante.nombre_equipo }} {{ integrante.tipo_rol}}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

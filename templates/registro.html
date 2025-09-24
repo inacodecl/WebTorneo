@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registros de Torneo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+<div class="container py-4">
+    <h2 class="escarlata-title mb-4">Registros de Torneo</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card mb-4">
+        <div class="card-header bg-escarlata text-light">
+            {% if registro_editar %}
+                Editar Registro
+            {% else %}
+                Crear Registro
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <form method="post" action="{{ url_for('registro.registro') }}">
+                {% if registro_editar %}
+                    <input type="hidden" name="id_registro" value="{{ registro_editar.id or registro_editar['id'] }}">
+                {% endif %}
+                <div class="mb-3">
+                    <label>Torneo</label>
+                    <select class="form-select" name="torneo_id" required>
+                        <option value="">Selecciona torneo</option>
+                        {% for torneo in torneos %}
+                            <option value="{{ torneo.id_torneo or torneo['id_torneo'] }}"
+                                {% if registro_editar and (registro_editar.torneo_id or registro_editar['torneo_id']) == (torneo.id_torneo or torneo['id_torneo']) %}selected{% endif %}>
+                                {{ torneo.nombre or torneo['nombre'] }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Equipo</label>
+                    <select class="form-select" name="equipo_id" required>
+                        <option value="">Selecciona equipo</option>
+                        {% for equipo in equipos %}
+                            <option value="{{ equipo.CodigoEquipo }}"
+                                {% if registro_editar and (registro_editar.equipo_id or registro_editar['equipo_id']) == equipo.CodigoEquipo %}selected{% endif %}>
+                                {{ equipo.NombreEquipo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-escarlata">
+                    {% if registro_editar %}Actualizar{% else %}Crear{% endif %}
+                </button>
+                {% if registro_editar %}
+                    <a href="{{ url_for('registro.registro') }}" class="btn btn-secondary ms-2">Cancelar</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-escarlata text-light">Registros actuales</div>
+        <div class="card-body p-0">
+            <table class="table table-dark table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Torneo</th>
+                        <th>Equipo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for registro in registros %}
+                    <tr>
+                        <td>
+                            {% set torneo = torneos | selectattr('id_torneo', 'equalto', registro.torneo_id) | list %}
+                            {{ torneo[0].nombre if torneo and torneo[0] else registro.torneo_id }}
+                        </td>
+                        <td>
+                            {% set equipo = equipos | selectattr('CodigoEquipo', 'equalto', registro.equipo_id) | list %}
+                            {{ equipo[0].NombreEquipo if equipo and equipo[0] else registro.equipo_id }}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('registro.registro', editar=registro.id or registro['id']) }}" class="btn btn-sm btn-outline-info">Editar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

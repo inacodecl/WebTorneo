@@ -1,0 +1,92 @@
+/* Reseteo de márgenes y padding para asegurar un diseño consistente */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fondo de la página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Fondo oscuro (más suave que el negro puro) */
+    color: #ddd; /* Texto en gris claro para contrastar con el fondo */
+    display: flex;
+    flex-direction: column; /* Usamos column para alinear los elementos de arriba hacia abajo */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+/* Contenedor principal */
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Estilo del encabezado */
+.header {
+    background-color: #db2228; /* Escarlata */
+    color: white;
+    padding: 20px;
+    border-radius: 15px; /* Bordes más redondeados */
+    margin-bottom: 30px; /* Espacio debajo */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Sombra más fuerte para el efecto de profundidad */
+}
+
+/* Estilo de la imagen del logo */
+.header img {
+    width: 100px; /* Ajusta el tamaño del logo */
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+/* Estilo del texto en el encabezado */
+.header p {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px; /* Espaciado para hacerlo más moderno */
+}
+
+/* Estilo de la cuenta atrás */
+.countdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px; /* Espacio entre las secciones */
+}
+
+/* Estilo de cada sección de tiempo (días, horas, minutos, segundos) */
+.time-item {
+    font-size: 60px; /* Tamaño de la fuente más grande */
+    font-weight: bold;
+    color: #db2228; /* Escarlata para los números */
+    background-color: #2d2d2d; /* Gris oscuro para el fondo de los bloques */
+    padding: 20px 30px; /* Más espacio dentro de la caja */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
+    min-width: 100px; /* Ancho mínimo para evitar que se rompa */
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out; /* Efecto al pasar el mouse */
+}
+
+/* Efecto hover para los bloques de tiempo */
+.time-item:hover {
+    background-color: #db2228; /* Escarlata de fondo cuando se pasa el mouse */
+    color: white; /* Texto blanco cuando se pasa el mouse */
+    transform: scale(1.1); /* Escala para resaltar el bloque */
+}
+
+/* Media query para pantallas más pequeñas */
+@media (max-width: 600px) {
+    .header p {
+        font-size: 16px;
+    }
+
+    .time-item {
+        font-size: 40px; /* Reducimos el tamaño de la fuente en pantallas más pequeñas */
+        padding: 15px 20px; /* Ajustamos el padding para pantallas más pequeñas */
+    }
+}
