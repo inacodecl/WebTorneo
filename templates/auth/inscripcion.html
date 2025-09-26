@@ -1,41 +1,66 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/inscripcion.css')}}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscripción de Equipo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/inscripcion.css') }}">
 </head>
 <body>
   <video id="introVideo" autoplay muted loop playsinline preload="auto">
-    <source src="{{url_for('static', filename='video/muchas.mp4')}}" type="video/mp4">
+    <source src="{{ url_for('static', filename='video/muchas.mp4') }}" type="video/mp4">
     Tu navegador no soporta video HTML5.
   </video>
+
   <div class="container">
     <h1 class="title">Inscripción de Equipo</h1>
-    <form id="inscripcionForm" method="post" action="{{ url_for('inscripcion.inscribir_equipo') }}">
+
+    <!-- IMPORTANTE: enctype para permitir archivos -->
+    <form id="inscripcionForm"
+          method="POST"
+          action="{{ url_for('inscripcion.inscribir_equipo') }}"
+          enctype="multipart/form-data">
+      
       <div class="form-group">
         <label for="nombreEquipo" class="form-label">Nombre del Equipo:</label>
-        <input type="text" id="nombreEquipo" name="nombreEquipo" class="form-input">
+        <input type="text"
+               id="nombreEquipo"
+               name="nombreEquipo"
+               class="form-input"
+               required>
       </div>
 
       <div class="form-group">
         <label for="avatar" class="form-label">Avatar:</label>
-        <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg, image/gif" class="form-input">
+        <input type="file"
+               id="avatar"
+               name="avatar"
+               accept="image/*"
+               class="form-input">
+        <!-- Acepta cualquier imagen; si quieres restringir, usa:
+             accept="image/png, image/jpeg, image/jpg, image/webp, image/gif" -->
       </div>
 
       <div class="form-group">
         <label for="pwd_equipo" class="form-label">Contraseña:</label>
-        <input type="password" name="pwd_equipo" id="pwd_equipo" class="form-input">
+        <input type="password"
+               name="pwd_equipo"
+               id="pwd_equipo"
+               class="form-input"
+               required>
       </div>
-      
+
       <div id="tablaContainer" class="table-container">
         <h3>Miembros del Equipo</h3>
-        
+
         <div class="form-group search-container">
           <label for="busquedaCorreo" class="form-label">Buscar correo:</label>
-          <input type="text" id="busquedaCorreo" name="busquedaCorreo" class="form-input" autocomplete="off">
-          <!-- Lista de sugerencias personalizada -->
+          <input type="text"
+                 id="busquedaCorreo"
+                 name="busquedaCorreo"
+                 class="form-input"
+                 autocomplete="off"
+                 placeholder="Busca y arrastra a la tabla">
           <ul id="sugerencias" class="suggestions-list"></ul>
         </div>
 
@@ -61,16 +86,31 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- Fallback: si el JS no llena la tabla, estos 3 inputs se envían igual.
+             Deben llamarse correos[] para que el backend los reciba. -->
+        <div class="form-group" style="margin-top:1rem">
+          <label class="form-label">Correos (fallback si no arrastras):</label>
+          <input type="email" class="form-input" name="correos[]" placeholder="correo 1 @inacapmail.cl"
+                 pattern="^[a-zA-Z0-9._%+-]+@inacapmail\.cl$" title="Debe ser @inacapmail.cl">
+          <input type="email" class="form-input" name="correos[]" placeholder="correo 2 @inacapmail.cl"
+                 pattern="^[a-zA-Z0-9._%+-]+@inacapmail\.cl$" title="Debe ser @inacapmail.cl">
+          <input type="email" class="form-input" name="correos[]" placeholder="correo 3 @inacapmail.cl"
+                 pattern="^[a-zA-Z0-9._%+-]+@inacapmail\.cl$" title="Debe ser @inacapmail.cl">
+          <small class="text-muted">Si usas la búsqueda/drag & drop, tu JS puede llenar o sincronizar estos campos automáticamente.</small>
+        </div>
       </div>
-      
+
       <button type="submit" class="submit-button">Inscribir equipo</button>
     </form>
 
-    <div class="alert alert-info text-center mb-4" style="background: rgba(30,30,30,0.85); color: #d90429; border: 1.5px solid #d90429;">
-      ¿Ya tienes un equipo? 
-      <a href="{{ url_for('login.formulario_login') }}" class="fw-bold text-escarlata" style="color: #d90429;">Inicia sesión aquí</a>
+    <div class="alert alert-info text-center mb-4"
+         style="background: rgba(30,30,30,0.85); color: #d90429; border: 1.5px solid #d90429;">
+      ¿Ya tienes un equipo?
+      <a href="{{ url_for('login.formulario_login') }}" class="fw-bold" style="color: #d90429;">Inicia sesión aquí</a>
     </div>
   </div>
-  <script src="{{url_for('static', filename='js/inscripcion.js')}}"></script>
+
+  <script src="{{ url_for('static', filename='js/inscripcion.js') }}"></script>
 </body>
 </html>
