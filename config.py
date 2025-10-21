@@ -17,4 +17,6 @@ config = {
     "MAIL_FROM": os.getenv("MAIL_FROM", os.getenv("MAIL_USERNAME")),
 
 }
-    
+
+API_BASE = "http://localhost:4000/api"  # ajusta el puerto si cambiaste
+JWT_COOKIE_NAME = "token"                # si no usas token, da lo mismo

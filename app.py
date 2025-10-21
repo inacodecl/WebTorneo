@@ -12,9 +12,13 @@ from blueprints.respuesta_codigo_blueprint import respuesta_codigo_bp
 from blueprints.inscripcion_blueprint import inscripcion_bp
 from blueprints.login_blueprint import login_bp
 from blueprints.dashboard_equipo_blueprint import dashboard_equipo_bp
-from blueprints.dashboard_juez_blueprint import dashboard_juez_bp
 from blueprints.dashboard_admin_blueprint import dashboard_admin_bp
 from blueprints.ranking import ranking_bp
+from blueprints.dashboard_juez_blueprint import juez_bp
+from blueprints.dashboard_juez_blueprint import juez_bp
+
+
+
 
 app = Flask(__name__)
 
@@ -33,7 +37,7 @@ app.register_blueprint(resultado_fase_bp, url_prefix='/resultado_fase')
 app.register_blueprint(resultado_torneo_bp, url_prefix='/resultado_torneo')
 app.register_blueprint(respuesta_codigo_bp, url_prefix='/respuesta_codigo')
 app.register_blueprint(dashboard_equipo_bp)
-app.register_blueprint(dashboard_juez_bp)
+app.register_blueprint(juez_bp)
 app.register_blueprint(dashboard_admin_bp)
 app.register_blueprint(ranking_bp)
 
