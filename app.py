@@ -40,6 +40,8 @@ app.register_blueprint(dashboard_equipo_bp)
 app.register_blueprint(juez_bp)
 app.register_blueprint(dashboard_admin_bp)
 app.register_blueprint(ranking_bp)
+app.secret_key = "dev"  # o tu clave
+
 
 # Ruta principal
 @app.route('/')
