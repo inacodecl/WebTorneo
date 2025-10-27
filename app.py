@@ -15,7 +15,7 @@ from blueprints.dashboard_equipo_blueprint import dashboard_equipo_bp
 from blueprints.dashboard_admin_blueprint import dashboard_admin_bp
 from blueprints.ranking import ranking_bp
 from blueprints.dashboard_juez_blueprint import juez_bp
-from blueprints.dashboard_juez_blueprint import juez_bp
+
 
 
 
