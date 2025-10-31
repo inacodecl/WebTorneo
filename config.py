@@ -18,5 +18,6 @@ config = {
 
 }
 
-API_BASE = "http://localhost:4000/api"  # ajusta el puerto si cambiaste
+URL_BASE_API = "https://apitorneo.inacode.cl/api"
+  # ajusta el puerto si cambiaste
 JWT_COOKIE_NAME = "token"                # si no usas token, da lo mismo
